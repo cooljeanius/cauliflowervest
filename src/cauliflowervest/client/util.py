@@ -28,6 +28,13 @@ import stat
 import subprocess
 from xml.parsers import expat
 
+def sanitize_cmd(cmd):
+    """Sanitize command to remove sensitive information."""
+    if isinstance(cmd, (list, tuple)):
+        return [part if 'p=' not in part else 'p=****' for part in cmd]
+    elif isinstance(cmd, str):
+        return re.sub(r'p=[^ ]+', 'p=****', cmd)
+    return cmd
 
 class Error(Exception):
   """Base error."""
@@ -80,7 +87,7 @@ def Exec(cmd, stdin=None):
     ExecError: When an error occurs while executing cmd. Exec did not complete.
   """
   shell = isinstance(cmd, basestring)
-  logging.debug('Exec(%s, shell=%s)', cmd, shell)
+  logging.debug('Exec(%s, shell=%s)', sanitize_cmd(cmd), shell)
   try:
     p = subprocess.Popen(
         cmd, shell=shell,
