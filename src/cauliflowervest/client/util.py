@@ -31,9 +31,9 @@ from xml.parsers import expat
 def sanitize_cmd(cmd):
     """Sanitize command to remove sensitive information."""
     if isinstance(cmd, (list, tuple)):
-        return [part if 'p=' not in part else 'p=****' for part in cmd]
+        return [re.sub(r'(p|pass|password|key|secret)=[^ ]+', r'\1=****', part) for part in cmd]
     elif isinstance(cmd, str):
-        return re.sub(r'p=[^ ]+', 'p=****', cmd)
+        return re.sub(r'(p|pass|password|key|secret)=[^ ]+', r'\1=****', cmd)
     return cmd
 
 class Error(Exception):
