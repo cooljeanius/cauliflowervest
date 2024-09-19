@@ -142,7 +142,9 @@ goog.removeUid = function(obj) {
   }catch(ex) {
   }
 };
-goog.UID_PROPERTY_ = "closure_uid_" + Math.floor(Math.random() * 2147483648).toString(36);
+var array = new Uint32Array(1);
+window.crypto.getRandomValues(array);
+goog.UID_PROPERTY_ = "closure_uid_" + array[0].toString(36);
 goog.uidCounter_ = 0;
 goog.getHashCode = goog.getUid;
 goog.removeHashCode = goog.removeUid;
