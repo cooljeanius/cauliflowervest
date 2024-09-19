@@ -100,7 +100,7 @@ def Exec(cmd, stdin=None):
   if sanitized_cmd != cmd:
       logging.debug('Exec command contains sensitive information and was sanitized.')
   else:
-      logging.debug('Exec(%s, shell=%s)', sanitized_cmd, shell)
+      logging.debug('Exec command executed with shell=%s', shell)
   try:
     p = subprocess.Popen(
         cmd, shell=shell,
