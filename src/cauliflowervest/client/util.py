@@ -28,6 +28,22 @@ import stat
 import subprocess
 from xml.parsers import expat
 
+def sanitize_cmd(cmd):
+    """Sanitize command to remove sensitive information."""
+    sensitive_patterns = [
+        r'(p|pass|password|key|secret)=[^ ]+',
+        r'--password=[^ ]+',
+        r'--key=[^ ]+',
+        r'--secret=[^ ]+',
+        r'--token=[^ ]+',
+    ]
+    if isinstance(cmd, (list, tuple)):
+        for pattern in sensitive_patterns:
+            cmd = [re.sub(pattern, r'\1=****', part) for part in cmd]
+    elif isinstance(cmd, str):
+        for pattern in sensitive_patterns:
+            cmd = re.sub(pattern, r'\1=****', cmd)
+    return cmd
 
 class Error(Exception):
   """Base error."""
@@ -80,7 +96,11 @@ def Exec(cmd, stdin=None):
     ExecError: When an error occurs while executing cmd. Exec did not complete.
   """
   shell = isinstance(cmd, basestring)
-  logging.debug('Exec(%s, shell=%s)', cmd, shell)
+  sanitized_cmd = sanitize_cmd(cmd)
+  if sanitized_cmd != cmd:
+      logging.debug('Exec command contains sensitive information and was sanitized.')
+  else:
+      logging.debug('Exec command executed with shell=%s', shell)
   try:
     p = subprocess.Popen(
         cmd, shell=shell,
