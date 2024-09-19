@@ -3,6 +3,7 @@ from google.appengine._internal.django.utils.importlib import import_module
 import os
 import re
 from random import choice
+from cryptography.fernet import Fernet
 
 class Command(LabelCommand):
     help = "Creates a Django project directory structure for the given project name in the current directory."
@@ -34,6 +35,19 @@ class Command(LabelCommand):
         settings_contents = open(main_settings_file, 'r').read()
         fp = open(main_settings_file, 'w')
         secret_key = ''.join([choice('abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)') for i in range(50)])
-        settings_contents = re.sub(r"(?<=SECRET_KEY = ')'", secret_key + "'", settings_contents)
+        encrypted_secret_key = encrypt_secret_key(secret_key)
+        settings_contents = re.sub(r"(?<=SECRET_KEY = ')'", encrypted_secret_key + "'", settings_contents)
         fp.write(settings_contents)
         fp.close()
+
+def encrypt_secret_key(secret_key):
+    key = Fernet.generate_key()
+    cipher_suite = Fernet(key)
+    encrypted_key = cipher_suite.encrypt(secret_key.encode())
+    return encrypted_key.decode()
+
+def decrypt_secret_key(encrypted_secret_key):
+    key = Fernet.generate_key()
+    cipher_suite = Fernet(key)
+    decrypted_key = cipher_suite.decrypt(encrypted_secret_key.encode())
+    return decrypted_key.decode()
