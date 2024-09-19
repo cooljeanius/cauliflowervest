@@ -389,7 +389,7 @@ class AbstractRpcServer(object):
             logger.debug("Got 302 redirect. Location: %s", loc)
             if loc.startswith("https://www.google.com/accounts/ServiceLogin"):
               self._Authenticate()
-            elif re.match(r"https://www.google.com/a/[a-z0-9.-]+/ServiceLogin",
+            elif re.match(r"https://www\.google\.com/a/[a-z0-9.-]+/ServiceLogin",
                           loc):
               self.account_type = os.getenv("APPENGINE_RPC_HOSTED_LOGIN_TYPE",
                                             "HOSTED")
