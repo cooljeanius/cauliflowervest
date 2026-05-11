@@ -58,7 +58,7 @@ setup(
     },
 
     setup_requires=REQUIRE,
-    install_requires=["cryptography==47.0.0"] + REQUIRE,
+    install_requires=["cryptography==48.0.0"] + REQUIRE,
     tests_require=REQUIRE + ['mox>=0.5.3', 'webob', 'django', 'pycrypto'],
 
     google_test_dir='src/tests',
