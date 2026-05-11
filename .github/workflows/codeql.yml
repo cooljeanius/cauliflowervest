@@ -51,11 +51,6 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        include:
-        - language: javascript-typescript
-          build-mode: none
-        - language: python
-          build-mode: none
         # CodeQL supports the following values keywords for 'language':
         # 'c-cpp', 'csharp', 'go', 'java-kotlin', 'javascript-typescript', 'python', 'ruby', 'swift'
         # Use `c-cpp` to analyze code written in C, C++ or both
@@ -67,6 +62,12 @@ jobs:
         # If you are analyzing a compiled language, you can modify the 'build-mode' for that language
         # to customize how your codebase is analyzed, see:
         # https://docs.github.com/en/code-security/code-scanning/creating-an-advanced-setup-for-code-scanning/codeql-code-scanning-for-compiled-languages
+        include:
+        - language: javascript-typescript
+          build-mode: none
+        - language: python
+          build-mode: none
+
     steps:
     - name: Checkout repository
       uses: actions/checkout@v6

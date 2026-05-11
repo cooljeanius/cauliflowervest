@@ -1,0 +1,14 @@
+---
+# https://yamllint.readthedocs.io/en/stable/configuration.html
+extends: default
+
+rules:
+  float-values: enable
+  octal-values: enable
+  truthy: disable
+  line-length:
+    max: 101  # 235
+    level: warning
+  indentation:
+    ignore:
+      - .github/workflows/codeql*.yml
