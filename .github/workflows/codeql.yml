@@ -52,7 +52,7 @@ jobs:
       fail-fast: false
       matrix:
         # CodeQL supports the following values keywords for 'language':
-        # 'c-cpp', 'csharp', 'go', 'java-kotlin', 'javascript-typescript', 'python', 'ruby', 'swift'
+        # 'actions', 'c-cpp', 'csharp', 'go', 'java-kotlin', 'javascript-typescript', 'python', 'ruby', 'swift'
         # Use 'c-cpp' to analyze code written in C, C++, or both
         # Use 'java-kotlin' to analyze code written in Java, Kotlin, or both
         # Use 'javascript-typescript' to analyze code written in JavaScript, TypeScript, or both
@@ -66,6 +66,8 @@ jobs:
         - language: javascript-typescript
           build-mode: none
         - language: python
+          build-mode: none
+        - language: actions
           build-mode: none
 
     steps:
